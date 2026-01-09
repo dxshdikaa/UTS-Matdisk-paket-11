@@ -1,0 +1,106 @@
+// Tugas Besar MTK Diskrit
+// Dika Aldiansyah & Rifqi Anwar Sidiq
+// Paket 11
+
+package main
+
+import "fmt"
+
+func adaDiDalam(list []int, angka int) bool {
+	for _, item := range list {
+		if item == angka {
+			return true
+		}
+	}
+	return false
+}
+
+func ProsesHimpunan(A, B, C []int, N int) {
+	selisihSimetri := []int{}
+
+	for _, v := range A {
+		if !adaDiDalam(B, v) {
+			selisihSimetri = append(selisihSimetri, v)
+		}
+	}
+
+	for _, v := range B {
+		if !adaDiDalam(A, v) {
+			selisihSimetri = append(selisihSimetri, v)
+		}
+	}
+
+	hasilKurangC := []int{}
+	for _, v := range selisihSimetri {
+		if !adaDiDalam(C, v) {
+			hasilKurangC = append(hasilKurangC, v)
+		}
+	}
+
+	irisanAC := []int{}
+	for _, v := range A {
+		if adaDiDalam(C, v) {
+			irisanAC = append(irisanAC, v)
+		}
+	}
+
+	R := append([]int{}, hasilKurangC...)
+	for _, v := range irisanAC {
+		if !adaDiDalam(R, v) {
+			R = append(R, v)
+		}
+	}
+
+	fmt.Println("=== Materi I : Himpunan ===")
+	fmt.Printf("A : %v\n", A)
+	fmt.Printf("B : %v\n", B)
+	fmt.Printf("C : %v\n", C)
+	fmt.Printf("Hasil R : %v\n", R)
+
+	batas := N / 4
+	final := []int{}
+
+	for _, v := range R {
+		if v%2 == 0 && v < batas {
+			final = append(final, v)
+		}
+	}
+
+	fmt.Printf("Filter (Genap < %d) : %v\n", batas, final)
+	fmt.Printf("Total Elemen : %d\n\n", len(final))
+}
+
+func CariPasangan(S []int, K int) {
+	fmt.Println("=== Analisis Pasangan Subset ===")
+	fmt.Printf("Himpunan S : %v\n", S)
+	fmt.Printf("Nilai K    : %d\n", K)
+
+	nomor := 0
+	for i := 0; i < len(S); i++ {
+		for j := i + 1; j < len(S); j++ {
+			if S[i]+S[j] > K {
+				nomor++
+				fmt.Printf(
+					"%d. {%d, %d} -> Jumlah = %d\n",
+					nomor, S[i], S[j], S[i]+S[j],
+				)
+			}
+		}
+	}
+
+	fmt.Printf("Total Pasangan : %d\n\n", nomor)
+}
+
+func main() {
+	A := []int{3, 10, 12, 20}
+	B := []int{5, 10, 18}
+	C := []int{10, 7}
+
+	S := []int{4, 6, 8, 9, 10, 12}
+
+	N := 85
+	K := 13
+
+	ProsesHimpunan(A, B, C, N)
+	CariPasangan(S, K)
+}
